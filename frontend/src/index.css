@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Carousel styles */
+.header_carousel .swiper-slide {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.header_carousel .swiper-pagination {
+  text-align: right;
+  position: absolute;
+  right: 10px !important; 
+  left: auto !important;
+  top: 20px !important;
+  z-index: 100;
+  display: flex;
+  gap: .5rem;
+}
+
+.header_carousel .swiper-pagination-bullet {
+  display: flex;
+  width: 50px !important; 
+  height: 4px !important;
+  border-radius: 0px !important;
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
+.header_carousel .swiper-pagination-bullet-active {
+  background-color: #6B8E23 !important;
+}
+
+/* Hide scrollbar */
+.custom-scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;    
+}
