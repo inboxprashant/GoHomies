@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require('cors');
 const { connectToMongoDb } = require('./connection');
@@ -20,7 +21,8 @@ app.use(cors({
 app.use("/user", userRoute);
 app.use("/post", restrictToLoggedInUserOnly, postRoute);
 
-connectToMongoDb('mongodb+srv://Superman:Prashant%40123@cluster0.u53jmy6.mongodb.net/Gohomies?retryWrites=true&w=majority')
+// 🔥 Use environment variable instead of hardcoded secret
+connectToMongoDb(process.env.MONGO_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
