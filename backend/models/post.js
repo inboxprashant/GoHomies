@@ -15,9 +15,17 @@ const postSchema = new mongoose.Schema({
     description:{
         type:String
     },
-    likeCount:{
-        type:Number
+    likeCount: {
+        type: Number,
+        default: 0,
     },
+    // track which users liked the post to prevent double-likes
+    likedBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "users",
+        },
+    ],
     userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"users",
@@ -33,6 +41,19 @@ const postSchema = new mongoose.Schema({
             ref: "users"
         }
     ],
+    // store comments within the post for simplicity
+    comments: [
+        {
+            userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
+            text: { type: String, required: true },
+            createdAt: { type: Date, default: Date.now },
+        },
+    ],
+    // track number of times a post was shared
+    shareCount: {
+        type: Number,
+        default: 0,
+    },
     default: []     
 },{timestamps:true})
 
