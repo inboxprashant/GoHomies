@@ -8,6 +8,9 @@ const { restrictToLoggedInUserOnly } = require("./middleware/auth");
 const app = express();
 const PORT = 8001;
 
+
+
+
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
 

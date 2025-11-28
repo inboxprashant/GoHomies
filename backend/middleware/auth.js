@@ -1,19 +1,30 @@
-const {getUser} = require("../Service/auth")
+const { getUser } = require("../Service/auth");
+const User = require("../models/user");
 
+async function restrictToLoggedInUserOnly(req, res, next) {
+    try {
+        const token = req.cookies?.uid;
+        if (!token) {
+            return res.status(401).json({ msg: "Not logged in" });
+        }
 
-async function restrictToLoggedInUserOnly(req,res,next){
-    const userUid = req.cookies?.uid;
+        const decoded = getUser(token);
+        if (!decoded) {
+            return res.status(401).json({ msg: "Invalid token" });
+        }
 
-    if(!userUid) return res.json({msg:"Not Logged Innnn"});
+        // IMPORTANT: Fetch real MongoDB user
+        const user = await User.findById(decoded._id);
+        if (!user) {
+            return res.status(401).json({ msg: "User no longer exists" });
+        }
 
-    const user = getUser(userUid);
-
-    if(!user) return res.json({msg:"Not Logged Innnn"});
-
-    req.user = user;
-
-    next()
-
+        req.user = user;   // <-- NOW this is a REAL Mongoose user document
+        next();
+    } catch (err) {
+        console.log("Auth error:", err);
+        return res.status(500).json({ msg: "Auth middleware error" });
+    }
 }
 
-module.exports = {restrictToLoggedInUserOnly}
+module.exports = { restrictToLoggedInUserOnly };
